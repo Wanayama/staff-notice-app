@@ -1,6 +1,6 @@
 import Image from "next/image";
 import React, { useEffect } from "react";
-import logo from "@/assets/logo1.png";
+import logo from "@/assets/logo1.PNG";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "@/firebase/config";
 import { signOut } from "firebase/auth";
