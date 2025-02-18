@@ -1,7 +1,7 @@
 "use client";
 import { auth } from "@/firebase/config";
 import { useRouter } from "next/navigation";
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
 
 export default function SignIn() {
@@ -10,6 +10,13 @@ export default function SignIn() {
   const [signInWithEmailAndPassword, user, loading, error] =
     useSignInWithEmailAndPassword(auth);
   const router = useRouter();
+
+  // Prevent static pre-rendering
+  useEffect(() => {
+    if (user) {
+      router.push("/");
+    }
+  }, [user, router]);
 
   const handleSignin = useCallback(
     async (e) => {
