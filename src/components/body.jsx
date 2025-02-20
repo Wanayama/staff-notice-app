@@ -1,5 +1,6 @@
 "use client";
 
+import Loading from "@/app/loading";
 import { auth, db } from "@/firebase/config";
 import { collection, CollectionReference, onSnapshot, orderBy, query } from "firebase/firestore";
 import { useRouter } from "next/navigation";
@@ -13,6 +14,7 @@ const body = () => {
   const router = useRouter();
 
   const [user] = useAuthState(auth)
+  const [isLoading, setLoading] = useState(true);
 
   const handleClick = () =>{
     if(user){
@@ -33,6 +35,7 @@ const body = () => {
         qArry.push({id: doc.id, ...doc.data()})
       });
       setNotice(qArry)
+      setLoading(false)
     })
     return unsub;
   },[]) 
@@ -48,7 +51,8 @@ const body = () => {
       </p>
 
       <ul className="flex flex-col justify-center items-center p-5 md:p-6 bg-[url('../assets/shape-5.png')] bg-contain bg-no-repeat bg-slate-950 mx-2 md:mx-10 rounded-md">
-        {notice.map((item, id) => (
+        {isLoading ? <Loading /> :
+        notice.map((item, id) => (
           <li
             key={id}
             className="flex flex-col max-w-[500px] border odd:bg-slate-700 rounded-md mb-6 gap-3 border-s-white p-6 mx-auto"
@@ -63,7 +67,7 @@ const body = () => {
             <span className="text-gray-500 text-xs">{item.createdAt.toDate().toLocaleString()}</span>
           </li>
         ))}
-      <div className="mt-7 ml-8 z-10 ">
+      <div className="mt-7 z-10 ">
           <button
           onClick={handleClick}
            className="group flex items-center bg-white text-black font-medium border border-gray-300 px-3 py-2 rounded-full transition-all duration-300 ease-in-out w-11 hover:w-52 shadow-lg overflow-hidden">
