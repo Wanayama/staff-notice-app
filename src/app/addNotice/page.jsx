@@ -1,8 +1,9 @@
 "use client";
-import { db } from "@/firebase/config";
+import { auth, db } from "@/firebase/config";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { useRouter } from "next/navigation";
 import React, { useState, useCallback } from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 const Page = () => {
   const [newNotice, setNewNotice] = useState({
@@ -12,6 +13,7 @@ const Page = () => {
   });
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const [user] = useAuthState(auth)
 
   const addNotice = useCallback(async (e) => {
     e.preventDefault();
@@ -27,6 +29,7 @@ const Page = () => {
         title: newNotice.title.trim(),
         description: newNotice.description.trim(),
         createdAt: serverTimestamp(),
+        userId: user.uid
       });
 
       setNewNotice({ title: "", description: "", username: "" });

@@ -1,6 +1,6 @@
 "use client";
 
-import Loading from "@/app/loading";
+import Loading from "@/components/loading";
 import { auth, db } from "@/firebase/config";
 import { collection, CollectionReference, onSnapshot, orderBy, query } from "firebase/firestore";
 import { useRouter } from "next/navigation";
@@ -65,6 +65,7 @@ const body = () => {
               From: {item.username}
             </span>
             <span className="text-gray-500 text-xs">{item.createdAt.toDate().toLocaleString()}</span>
+            <button></button>
           </li>
         ))}
       <div className="mt-7 z-10 ">
