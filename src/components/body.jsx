@@ -1,8 +1,8 @@
 "use client";
 
-import Loading from "@/components/loading";
-import { auth, db } from "@/firebase/config";
-import { collection, CollectionReference, onSnapshot, orderBy, query } from "firebase/firestore";
+import Loading from "./loading";
+import { auth, db } from "../firebase/config";
+import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";

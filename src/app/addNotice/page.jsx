@@ -1,11 +1,13 @@
 "use client";
-import { auth, db } from "@/firebase/config";
+import useFcmToken from "../../hooks/useFcmToken";
+import { auth, db } from "../../firebase/config";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { useRouter } from "next/navigation";
 import React, { useState, useCallback } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 
 const Page = () => {
+  const { token } = useFcmToken();
   const [newNotice, setNewNotice] = useState({
     title: "",
     description: "",
@@ -43,6 +45,24 @@ const Page = () => {
     }
   }, [newNotice, router]);
 
+  const handleNotification = async () => {
+    const response = await fetch("/send-notification", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        token: token,
+        title: "Ribs & Rythm Restaurant",
+        message: "This is a test notification",
+        link: "/",
+      }),
+    });
+
+    const data = await response.json();
+    console.log(data);
+  };
+
   return (
     <div className="flex min-h-screen items-center justify-center bg-[url('../assets/shape-2.png')] bg-contain bg-slate-900">
       <div className="w-full max-w-md p-8 sm:mx-4 rounded-2xl shadow-lg">
@@ -75,6 +95,7 @@ const Page = () => {
           </div>
           <button
             type="submit"
+            onClick={handleNotification}
             className={`w-full p-3 rounded-lg font-medium transition ${
               loading
                 ? "bg-gray-500 cursor-not-allowed"
